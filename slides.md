@@ -55,30 +55,21 @@ Imagine you're monitoring an API. You get 10 requests with these response times 
 
 <div v-click="2">
   <div class="mt-4">
-Average: <code v-mark.red.underline="3">(100 + 120 + 110 + 130 + 115 + 125 + 105 + 140 + 150 + 2000) / 10 =</code> **<code v-mark.red.bold="3">399.5ms</code>**
+    Average: 
+    <code>(100 + 120 + 110 + 130 + 115 + 125 + 105 + 140 + 150 + 2000) / 10 =</code>
+    <code v-click="3" v-mark.red.bold="3">399.5ms</code>
   </div>
 </div>
 
 <div v-click="4">
   <p class="mt-4">
-Sounds bad, right? But <span v-mark.highlight.orange="5">look closer...</span>
-<br>
-Why this matters: One outlier (<code v-mark.orange="5">2000ms</code>) skews the average, making performance seem worse than it is. Let's dig deeper.
-  </p>
+    Sounds bad, right? But look closer...
+    </p>
 </div>
+  <div v-click="5">
+  Why this matters: One outlier (<code v-mark.orange="6">2000ms</code>) skews the average, making performance seem worse than it is. Let's dig deeper.
+  </div>
 
-<!--
-Key points for this slide:
-- Introduce the problem with a clear example.
-- Use v-click to reveal information step-by-step.
-- Use v-mark to highlight the outlier and the skewed average.
-Clicks:
-1: Show data
-2: Show average calculation text
-3: Highlight parts of average calculation
-4: Show "Sounds bad..." text
-5: Highlight parts of "Sounds bad..." text
--->
 
 <style>
 h1 {
@@ -103,10 +94,12 @@ Let's sort those response times:
 <br>
 <br>
 
+<div v-click="1">
+
 ````md magic-move
 ```json {all|all}
 // Unsorted
-[100, 120, 110, 130, 115, 125, 105, 140, 150, 2000]
+[120, 100, 110, 130, 115, 125, 105, 2000, 140, 150]
 ```
 
 ```json {all|all}
@@ -114,20 +107,43 @@ Let's sort those response times:
 [100, 105, 110, 115, 120, 125, 130, 140, 150, 2000]
 ```
 ````
+</div>
 
 <div v-click="1" class="mt-4">
-Now, what if we want to know what 90% of users experience? Count 90% of the way through the sorted list (9th value): **<code v-mark.blue.bold="2">150ms</code>**.
-<br>
-That number? We call it the <span v-mark.underline.blue="2">90th percentile or p90</span>. It means 90% of requests were 150ms or faster.
+  Now, let's find the response time that 90% of users experience or better:
+  <ol class="mt-2 ml-6 list-decimal">
+    <li v-click="3">
+     Sort the list.
+    </li>
+    <li v-click="4">
+      Find the rank for the 90% mark. For 10 items:
+    </li>
+    </ol>
 </div>
 
-<div v-click="3" class="mt-4">
-Median: Take the middle value—average of <code v-mark.green="4">120</code> and <code v-mark.green="4">125</code> = **<code v-mark.green.bold="4">122.5ms</code>**.
+$$ {hide|hide|1|2|3|all}
+\begin{aligned}
+\text{Rank} &= n \times \frac{\text{percentage}}{100} \\
+&= 10 \times \frac{90}{100} \\
+&= 9
+\end{aligned}
+$$
+<div v-click="9">
+  The 9th value in our sorted list is <span v-click="10" v-mark.underline.blue="10">150ms</span>
+</div>
+  <div v-click="11" class="mt-2">
+    This 150ms value? 
+    <span v-click="12" >We call it </span> 
+    <span v-click="13" v-mark.underline.blue="13">90th percentile</span> 
+  </div>
+
+<!-- <div v-click="7" class="mt-4">
+Median (Middle Value): Average of <code v-mark.green="7">120</code> & <code v-mark.green="7">125</code> = **<code v-mark.green.bold="7">122.5ms</code>**.
 </div>
 
-<div v-click="5" class="mt-6 text-lg italic">
-Why this rocks: Sorting ignores outliers, showing what most users actually get.
-</div>
+<div v-click="8" class="mt-6 text-lg italic">
+The takeaway: Sorting reveals typical user experiences by sidelining outliers.
+</div> -->
 
 <!--
 This slide uses Magic Move to animate the sorting process!
