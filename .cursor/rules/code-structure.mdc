@@ -1,0 +1,8 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+for all slides use 
+<div v-click="4">
+when there is multiple components

@@ -5,12 +5,13 @@ theme: seriph
 # like them? see https://unsplash.com/collections/94734566/slidev
 background: https://cover.sli.dev
 # some information about your slides (markdown enabled)
-title: Welcome to Slidev
+title: DevOps Response Time Metrics
+subtitle: Why Percentiles Win
 info: |
-  ## Slidev Starter Template
-  Presentation slides for developers.
+  ## DevOps Response Time Metrics
+  An interactive presentation on why percentiles are superior to averages for understanding performance.
 
-  Learn more at [Sli.dev](https://sli.dev)
+  Inspired by Slidev features!
 # apply unocss classes to the current slide
 class: text-center
 # https://sli.dev/features/drawing
@@ -20,18 +21,11 @@ drawings:
 transition: slide-left
 # enable MDC Syntax: https://sli.dev/features/mdc
 mdc: true
-# open graph
-# seoMeta:
-#  ogImage: https://cover.sli.dev
+highlighter: shiki
 ---
 
-# Welcome to Slidev
-
-Presentation slides for developers
-
-<div @click="$slidev.nav.next" class="mt-12 py-1" hover:bg="white op-10">
-  Press Space for next page <carbon:arrow-right />
-</div>
+# DevOps Response Time Metrics
+## Why Percentiles Win
 
 <div class="abs-br m-6 text-xl">
   <button @click="$slidev.nav.openInEditor()" title="Open in Editor" class="slidev-icon-btn">
@@ -42,33 +36,48 @@ Presentation slides for developers
   </a>
 </div>
 
-<!--
-The last comment block of each slide will be treated as slide notes. It will be visible and editable in Presenter Mode along with the slide. [Read more in the docs](https://sli.dev/guide/syntax.html#notes)
--->
-
 ---
 transition: fade-out
+level: 1
 ---
 
-# What is Slidev?
+# A Tale of Misleading Averages
 
-Slidev is a slides maker and presenter designed for developers, consist of the following features
+Imagine you're monitoring an API. You get 10 requests with these response times (in milliseconds):
 
-- 📝 **Text-based** - focus on the content with Markdown, and then style them later
-- 🎨 **Themable** - themes can be shared and re-used as npm packages
-- 🧑‍💻 **Developer Friendly** - code highlighting, live coding with autocompletion
-- 🤹 **Interactive** - embed Vue components to enhance your expressions
-- 🎥 **Recording** - built-in recording and camera view
-- 📤 **Portable** - export to PDF, PPTX, PNGs, or even a hostable SPA
-- 🛠 **Hackable** - virtually anything that's possible on a webpage is possible in Slidev
+<div v-click="1">
+  <div class="mt-4">
+```json
+[100, 120, 110, 130, 115, 125, 105, 140, 150, 2000]
+```
+  </div>
+</div>
+
+<div v-click="2">
+  <div class="mt-4">
+Average: <code v-mark.red.underline="3">(100 + 120 + 110 + 130 + 115 + 125 + 105 + 140 + 150 + 2000) / 10 =</code> **<code v-mark.red.bold="3">399.5ms</code>**
+  </div>
+</div>
+
+<div v-click="4">
+  <p class="mt-4">
+Sounds bad, right? But <span v-mark.highlight.orange="5">look closer...</span>
 <br>
-<br>
-
-Read more about [Why Slidev?](https://sli.dev/guide/why)
+Why this matters: One outlier (<code v-mark.orange="5">2000ms</code>) skews the average, making performance seem worse than it is. Let's dig deeper.
+  </p>
+</div>
 
 <!--
-You can have `style` tag in markdown to override the style for the current page.
-Learn more: https://sli.dev/features/slide-scope-style
+Key points for this slide:
+- Introduce the problem with a clear example.
+- Use v-click to reveal information step-by-step.
+- Use v-mark to highlight the outlier and the skewed average.
+Clicks:
+1: Show data
+2: Show average calculation text
+3: Highlight parts of average calculation
+4: Show "Sounds bad..." text
+5: Highlight parts of "Sounds bad..." text
 -->
 
 <style>
@@ -83,557 +92,430 @@ h1 {
 }
 </style>
 
-<!--
-Here is another comment.
--->
-
 ---
 transition: slide-up
-level: 2
+level: 1
 ---
 
-# Navigation
+# Sorting to See the Truth
 
-Hover on the bottom-left corner to see the navigation's controls panel, [learn more](https://sli.dev/guide/ui#navigation-bar)
+Let's sort those response times:
+<br>
+<br>
 
-## Keyboard Shortcuts
-
-|                                                     |                             |
-| --------------------------------------------------- | --------------------------- |
-| <kbd>right</kbd> / <kbd>space</kbd>                 | next animation or slide     |
-| <kbd>left</kbd>  / <kbd>shift</kbd><kbd>space</kbd> | previous animation or slide |
-| <kbd>up</kbd>                                       | previous slide              |
-| <kbd>down</kbd>                                     | next slide                  |
-
-<!-- https://sli.dev/guide/animations.html#click-animation -->
-<img
-  v-click
-  class="absolute -bottom-9 -left-7 w-80 opacity-50"
-  src="https://sli.dev/assets/arrow-bottom-left.svg"
-  alt=""
-/>
-<p v-after class="absolute bottom-23 left-45 opacity-30 transform -rotate-10">Here!</p>
-
----
-layout: two-cols
-layoutClass: gap-16
----
-
-# Table of contents
-
-You can use the `Toc` component to generate a table of contents for your slides:
-
-```html
-<Toc minDepth="1" maxDepth="1" />
+````md magic-move
+```json {all|all}
+// Unsorted
+[100, 120, 110, 130, 115, 125, 105, 140, 150, 2000]
 ```
 
-The title will be inferred from your slide content, or you can override it with `title` and `level` in your frontmatter.
-
-::right::
-
-<Toc text-sm minDepth="1" maxDepth="2" />
-
----
-layout: image-right
-image: https://cover.sli.dev
----
-
-# Code
-
-Use code snippets and get the highlighting directly, and even types hover!
-
-```ts {all|5|7|7-8|10|all} twoslash
-// TwoSlash enables TypeScript hover information
-// and errors in markdown code blocks
-// More at https://shiki.style/packages/twoslash
-
-import { computed, ref } from 'vue'
-
-const count = ref(0)
-const doubled = computed(() => count.value * 2)
-
-doubled.value = 2
-```
-
-<arrow v-click="[4, 5]" x1="350" y1="310" x2="195" y2="334" color="#953" width="2" arrowSize="1" />
-
-<!-- This allow you to embed external code blocks -->
-<<< @/snippets/external.ts#snippet
-
-<!-- Footer -->
-
-[Learn more](https://sli.dev/features/line-highlighting)
-
-<!-- Inline style -->
-<style>
-.footnotes-sep {
-  @apply mt-5 opacity-10;
-}
-.footnotes {
-  @apply text-sm opacity-75;
-}
-.footnote-backref {
-  display: none;
-}
-</style>
-
-<!--
-Notes can also sync with clicks
-
-[click] This will be highlighted after the first click
-
-[click] Highlighted with `count = ref(0)`
-
-[click:3] Last click (skip two clicks)
--->
-
----
-level: 2
----
-
-# Shiki Magic Move
-
-Powered by [shiki-magic-move](https://shiki-magic-move.netlify.app/), Slidev supports animations across multiple code snippets.
-
-Add multiple code blocks and wrap them with <code>````md magic-move</code> (four backticks) to enable the magic move. For example:
-
-````md magic-move {lines: true}
-```ts {*|2|*}
-// step 1
-const author = reactive({
-  name: 'John Doe',
-  books: [
-    'Vue 2 - Advanced Guide',
-    'Vue 3 - Basic Guide',
-    'Vue 4 - The Mystery'
-  ]
-})
-```
-
-```ts {*|1-2|3-4|3-4,8}
-// step 2
-export default {
-  data() {
-    return {
-      author: {
-        name: 'John Doe',
-        books: [
-          'Vue 2 - Advanced Guide',
-          'Vue 3 - Basic Guide',
-          'Vue 4 - The Mystery'
-        ]
-      }
-    }
-  }
-}
-```
-
-```ts
-// step 3
-export default {
-  data: () => ({
-    author: {
-      name: 'John Doe',
-      books: [
-        'Vue 2 - Advanced Guide',
-        'Vue 3 - Basic Guide',
-        'Vue 4 - The Mystery'
-      ]
-    }
-  })
-}
-```
-
-Non-code blocks are ignored.
-
-```vue
-<!-- step 4 -->
-<script setup>
-const author = {
-  name: 'John Doe',
-  books: [
-    'Vue 2 - Advanced Guide',
-    'Vue 3 - Basic Guide',
-    'Vue 4 - The Mystery'
-  ]
-}
-</script>
+```json {all|all}
+// Sorted
+[100, 105, 110, 115, 120, 125, 130, 140, 150, 2000]
 ```
 ````
 
----
-
-# Components
-
-<div grid="~ cols-2 gap-4">
-<div>
-
-You can use Vue components directly inside your slides.
-
-We have provided a few built-in components like `<Tweet/>` and `<Youtube/>` that you can use directly. And adding your custom components is also super easy.
-
-```html
-<Counter :count="10" />
-```
-
-<!-- ./components/Counter.vue -->
-<Counter :count="10" m="t-4" />
-
-Check out [the guides](https://sli.dev/builtin/components.html) for more.
-
+<div v-click="1" class="mt-4">
+Now, what if we want to know what 90% of users experience? Count 90% of the way through the sorted list (9th value): **<code v-mark.blue.bold="2">150ms</code>**.
+<br>
+That number? We call it the <span v-mark.underline.blue="2">90th percentile or p90</span>. It means 90% of requests were 150ms or faster.
 </div>
-<div>
 
-```html
-<Tweet id="1390115482657726468" />
-```
-
-<Tweet id="1390115482657726468" scale="0.65" />
-
+<div v-click="3" class="mt-4">
+Median: Take the middle value—average of <code v-mark.green="4">120</code> and <code v-mark.green="4">125</code> = **<code v-mark.green.bold="4">122.5ms</code>**.
 </div>
+
+<div v-click="5" class="mt-6 text-lg italic">
+Why this rocks: Sorting ignores outliers, showing what most users actually get.
 </div>
 
 <!--
-Presenter note with **bold**, *italic*, and ~~striked~~ text.
-
-Also, HTML elements are valid:
-<div class="flex w-full">
-  <span style="flex-grow: 1;">Left content</span>
-  <span>Right content</span>
-</div>
+This slide uses Magic Move to animate the sorting process!
+Clicks:
+1: Show P90 text
+2: Highlight P90 value and explanation
+3: Show Median text
+4: Highlight Median values
+5: Show "Why this rocks..."
 -->
 
 ---
-class: px-20
+layout: two-cols
+layoutClass: gap-8
+level: 1
 ---
 
-# Themes
+# Why Percentiles Rule in DevOps
 
-Slidev comes with powerful theming support. Themes can provide styles, layouts, components, or even configurations for tools. Switching between themes by just **one edit** in your frontmatter:
-
-<div grid="~ cols-2 gap-2" m="t-2">
-
-```yaml
----
-theme: default
----
-```
-
-```yaml
----
-theme: seriph
----
-```
-
-<img border="rounded" src="https://github.com/slidevjs/themes/blob/main/screenshots/theme-default/01.png?raw=true" alt="">
-
-<img border="rounded" src="https://github.com/slidevjs/themes/blob/main/screenshots/theme-seriph/01.png?raw=true" alt="">
-
+<div v-click="1">
+- **Real user experience**: Percentiles (e.g., p90, p95) focus on what most users see, not rare spikes.
+</div>
+<div v-click="2">
+- **SLOs and SLAs**: You set targets like "95% of requests < 200ms." Percentiles measure this directly.
+</div>
+<div v-click="3">
+- **Outlier resistance**: A few slow requests don't ruin your metrics.
 </div>
 
-Read more about [How to use a theme](https://sli.dev/guide/theme-addon#use-theme) and
-check out the [Awesome Themes Gallery](https://sli.dev/resources/theme-gallery).
+::right::
 
----
-
-# Clicks Animations
-
-You can add `v-click` to elements to add a click animation.
-
-<div v-click>
-
-This shows up when you click the slide:
-
-```html
-<div v-click>This shows up when you click the slide.</div>
-```
-
-</div>
-
+<div v-click="4" class="mt-8">
+### Compare (from our first example):
 <br>
-
-<v-click>
-
-The <span v-mark.red="3"><code>v-mark</code> directive</span>
-also allows you to add
-<span v-mark.circle.orange="4">inline marks</span>
-, powered by [Rough Notation](https://roughnotation.com/):
-
-```html
-<span v-mark.underline.orange>inline markers</span>
-```
-
-</v-click>
-
-<div mt-20 v-click>
-
-[Learn more](https://sli.dev/guide/animations#click-animation)
-
+Average: <code v-mark.red="5">**399.5ms**</code>
+<p>(Suggests poor performance)</p>
+<br>
+p90: <code v-mark.green="5">**150ms**</code>
+<p>(Shows most users are fine)</p>
 </div>
 
+<div v-click="6" class="mt-6">
+<mermaid caption="Average vs P90 visualization from first example" alt="Bar chart showing average much higher than P90">
+graph LR
+    A[Average: 399.5ms] -->|Skewed by Outlier| BadExperience(Poor Perception)
+    P[p90: 150ms] -->|Represents Majority| GoodExperience(Actual Perception)
+
+    style A fill:#fecaca,stroke:#ef4444,stroke-width:2px
+    style P fill:#d1fae5,stroke:#10b981,stroke-width:2px
+</mermaid>
+</div>
+
+<!--
+This slide uses:
+- two-cols layout for a clear comparison.
+Clicks:
+1: Show "Real user experience"
+2: Show "SLOs and SLAs"
+3: Show "Outlier resistance"
+4: Show "Compare" text
+5: Highlight comparison values
+6: Show Mermaid diagram
+-->
+
+---
+level: 2
+title: Example 1 - Bad Average, Good Percentiles
 ---
 
-# Motions
+# When Averages Fail
+## Example 1: Bad Average, Good Percentiles
 
-Motion animations are powered by [@vueuse/motion](https://motion.vueuse.org/), triggered by `v-motion` directive.
+Scenario: 10 requests: `50, 60, 55, 65, 70, 75, 80, 85, 90,` <code v-mark.bold.red>5000</code>
 
-```html
+<div grid="~ cols-3 gap-4" class="mt-4">
+  <div v-click="1">
+    **Average:**
+    ```ts
+    (50+60+55+65+70+75+80+85+90+5000)/10
+    // = 563ms
+    ```
+    <span v-mark.red="2">Highly misleading!</span>
+  </div>
+  <div v-click="3">
+    **Median:**
+    Sorted: `50,55,60,65,`**`70,75`**`,80,85,90,5000`
+    ```ts
+    (70+75)/2
+    // = 67.5ms
+    ```
+  </div>
+  <div v-click="4">
+    **p90:**
+    9th value in sorted list
+    ```ts
+    // = 90ms
+    ```
+    <span v-mark.green="5">Much better!</span>
+  </div>
+</div>
+
+<div v-click="6">
+  <p class="mt-6 text-lg italic">
+Takeaway: One terrible request (<code v-mark.red="7">5000ms</code>) inflates the average, but 90% of users got <90ms. Percentiles tell the true story.
+  </p>
+</div>
+
+<!--
+Clicks:
+1: Show Average calculation
+2: Highlight "Highly misleading"
+3: Show Median calculation
+4: Show P90 calculation
+5: Highlight "Much better"
+6: Show Takeaway text
+7: Highlight outlier in takeaway
+-->
+
+---
+level: 2
+title: Example 2 - Good Average, Bad Percentiles
+---
+
+# Another Trap
+## Example 2: Good Average, Bad Percentiles
+
+Scenario: 10 requests: `50, 50, 50, 50, 50,` <code v-mark.bold.orange>400, 400, 400, 400, 400</code>
+
+<div grid="~ cols-3 gap-4" class="mt-4">
+  <div v-click="1">
+    **Average:**
+    ```ts
+    (50*5 + 400*5)/10
+    // = 225ms
+    ```
+    <span v-mark.yellow="2">Seems okay...</span>
+  </div>
+  <div v-click="3">
+    **Median:**
+    Sorted: `50,50,50,50,`**`50,400`**`,400,400,400,400`
+    ```ts
+    (50+400)/2
+    // = 225ms
+    ```
+  </div>
+  <div v-click="4">
+    **p90:**
+    9th value in sorted list
+    ```ts
+    // = 400ms
+    ```
+    <span v-mark.red="5">Alarming!</span>
+  </div>
+</div>
+
+<div v-click="6">
+  <p class="mt-6 text-lg italic">
+Takeaway: Average looks decent, but <span v-mark.highlight.orange="7">50% of users waited 400ms!</span> Percentiles expose the pain for many users.
+  </p>
+</div>
+
+<!--
+Clicks:
+1: Show Average calculation
+2: Highlight "Seems okay..."
+3: Show Median calculation
+4: Show P90 calculation
+5: Highlight "Alarming!"
+6: Show Takeaway text
+7: Highlight issue in takeaway
+-->
+
+---
+level: 2
+title: Example 3 - Averages and Percentiles Align
+---
+
+# When Averages and Percentiles Align
+## Example 3
+
+Scenario: 10 requests: `100, 102, 104, 106, 108, 110, 112, 114, 116, 118`
+
+<div grid="~ cols-3 gap-4" class="mt-4">
+  <div v-click="1">
+    **Average:**
+    ```ts
+    // Sum / 10 = 109ms
+    ```
+  </div>
+  <div v-click="2">
+    **Median:**
+    ```ts
+    // (108+110)/2 = 109ms
+    ```
+  </div>
+  <div v-click="3">
+    **p90:**
+    ```ts
+    // 9th value = 116ms
+    ```
+  </div>
+</div>
+
+<div v-click="4">
+  <p class="mt-6 text-lg italic">
+Takeaway: No significant outliers, so average, median, and percentiles align. <span v-mark.highlight.green="5">But this is rare in real systems!</span>
+  </p>
+</div>
+
 <div
   v-motion
-  :initial="{ x: -80 }"
-  :enter="{ x: 0 }"
-  :click-3="{ x: 80 }"
-  :leave="{ x: 1000 }"
+  :initial="{ x: 100, opacity: 0 }"
+  :enter="{ x: 0, opacity: 1, transition: { delay: 1000 } }"
+  class="mt-4 p-2 bg-teal-50 text-teal-700 rounded"
 >
-  Slidev
+This scenario represents a very consistent system performance, which is ideal but not always the reality.
 </div>
-```
 
-<div class="w-60 relative">
-  <div class="relative w-40 h-40">
-    <img
-      v-motion
-      :initial="{ x: 800, y: -100, scale: 1.5, rotate: -50 }"
-      :enter="final"
-      class="absolute inset-0"
-      src="https://sli.dev/logo-square.png"
-      alt=""
-    />
-    <img
-      v-motion
-      :initial="{ y: 500, x: -100, scale: 2 }"
-      :enter="final"
-      class="absolute inset-0"
-      src="https://sli.dev/logo-circle.png"
-      alt=""
-    />
-    <img
-      v-motion
-      :initial="{ x: 600, y: 400, scale: 2, rotate: 100 }"
-      :enter="final"
-      class="absolute inset-0"
-      src="https://sli.dev/logo-triangle.png"
-      alt=""
-    />
+
+<!--
+Clicks:
+1: Show Average
+2: Show Median
+3: Show P90
+4: Show Takeaway text
+5: Highlight takeaway point
+The v-motion element is not click-controlled in this sequence.
+-->
+
+---
+layout: default
+level: 1
+---
+
+# Actionable Takeaways for DevOps
+
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+  <div v-click="1" class="p-4 border rounded-lg shadow hover:shadow-xl transition-shadow">
+    <h3 class="text-xl font-semibold text-emerald-600">🎯 Use Percentiles</h3>
+    Use percentiles (p90, p95, p99) for monitoring and SLOs. They reflect actual user experience.
   </div>
 
-  <div
-    class="text-5xl absolute top-14 left-40 text-[#2B90B6] -z-1"
-    v-motion
-    :initial="{ x: -80, opacity: 0}"
-    :enter="{ x: 0, opacity: 1, transition: { delay: 2000, duration: 1000 } }">
-    Slidev
+  <div v-click="2" class="p-4 border rounded-lg shadow hover:shadow-xl transition-shadow">
+    <h3 class="text-xl font-semibold text-amber-600">⚠️ Avoid Averages (Mostly)</h3>
+    Avoid averages for response times unless data is very consistent (rare in production).
+  </div>
+
+  <div v-click="3" class="p-4 border rounded-lg shadow hover:shadow-xl transition-shadow">
+    <h3 class="text-xl font-semibold text-sky-600">📈 Example SLO</h3>
+    Set an SLO: "95% of API requests < 200ms." Track p95 to ensure you meet it.
+    <br>
+    <span class="text-sm text-gray-600">e.g. $\\text{P}_{95}(\\text{response time}) < 200\\text{ms}$</span>
+  </div>
+
+  <div v-click="4" class="p-4 border rounded-lg shadow hover:shadow-xl transition-shadow">
+    <h3 class="text-xl font-semibold text-purple-600">🛠️ Tool Tip</h3>
+    Use Prometheus, Grafana, or Datadog to track percentiles easily. They have built-in functions!
+    <br>
+    <span class="text-sm text-gray-600">(e.g., `histogram_quantile()` in PromQL)</span>
   </div>
 </div>
 
-<!-- vue script setup scripts can be directly used in markdown, and will only affects current page -->
-<script setup lang="ts">
-const final = {
-  x: 0,
-  y: 0,
-  rotate: 0,
-  scale: 1,
-  transition: {
-    type: 'spring',
-    damping: 10,
-    stiffness: 20,
-    mass: 2
-  }
-}
-</script>
-
-<div
-  v-motion
-  :initial="{ x:35, y: 30, opacity: 0}"
-  :enter="{ y: 0, opacity: 1, transition: { delay: 3500 } }">
-
-[Learn more](https://sli.dev/guide/animations.html#motion)
-
+<div v-click="5">
+  <p class="mt-12 text-2xl text-center font-semibold text-gray-700">
+Final word: <span class="text-green-500">Percentiles empower you</span> to focus on what matters—<span class="text-blue-500">your users!</span>
+  </p>
 </div>
 
----
-
-# LaTeX
-
-LaTeX is supported out-of-box. Powered by [KaTeX](https://katex.org/).
-
-<div h-3 />
-
-Inline $\sqrt{3x-1}+(1+x)^2$
-
-Block
-$$ {1|3|all}
-\begin{aligned}
-\nabla \cdot \vec{E} &= \frac{\rho}{\varepsilon_0} \\
-\nabla \cdot \vec{B} &= 0 \\
-\nabla \times \vec{E} &= -\frac{\partial\vec{B}}{\partial t} \\
-\nabla \times \vec{B} &= \mu_0\vec{J} + \mu_0\varepsilon_0\frac{\partial\vec{E}}{\partial t}
-\end{aligned}
-$$
-
-[Learn more](https://sli.dev/features/latex)
+<!--
+Clicks:
+1: Show "Use Percentiles" card
+2: Show "Avoid Averages" card
+3: Show "Example SLO" card
+4: Show "Tool Tip" card
+5: Show "Final word"
+-->
 
 ---
+title: Table of Contents
+level: 1
+---
 
-# Diagrams
+# Table of Contents
 
-You can create diagrams / graphs from textual descriptions, directly in your Markdown.
+You can use the `Toc` component to generate a table of contents for your slides.
+The `level` in each slide's frontmatter determines its depth in the ToC.
 
-<div class="grid grid-cols-4 gap-5 pt-4 -mb-6">
-
-```mermaid {scale: 0.5, alt: 'A simple sequence diagram'}
-sequenceDiagram
-    Alice->John: Hello John, how are you?
-    Note over Alice,John: A typical interaction
+```html
+<Toc minDepth="1" maxDepth="2" />
 ```
 
-```mermaid {theme: 'neutral', scale: 0.8}
-graph TD
-B[Text] --> C{Decision}
-C -->|One| D[Result 1]
-C -->|Two| E[Result 2]
-```
+<Toc class="mt-4" minDepth="1" maxDepth="2" />
 
-```mermaid
-mindmap
-  root((mindmap))
-    Origins
-      Long history
-      ::icon(fa fa-book)
-      Popularisation
-        British popular psychology author Tony Buzan
-    Research
-      On effectiveness<br/>and features
-      On Automatic creation
-        Uses
-            Creative techniques
-            Strategic planning
-            Argument mapping
-    Tools
-      Pen and paper
-      Mermaid
-```
-
-```plantuml {scale: 0.7}
-@startuml
-
-package "Some Group" {
-  HTTP - [First Component]
-  [Another Component]
-}
-
-node "Other Groups" {
-  FTP - [Second Component]
-  [First Component] --> FTP
-}
-
-cloud {
-  [Example 1]
-}
-
-database "MySql" {
-  folder "This is my folder" {
-    [Folder 3]
-  }
-  frame "Foo" {
-    [Frame 4]
-  }
-}
-
-[Another Component] --> [Example 1]
-[Example 1] --> [Folder 3]
-[Folder 3] --> [Frame 4]
-
-@enduml
-```
-
-</div>
-
-Learn more: [Mermaid Diagrams](https://sli.dev/features/mermaid) and [PlantUML Diagrams](https://sli.dev/features/plantuml)
+<!--
+This slide demonstrates the Table of Contents feature.
+- Make sure slides that should appear in ToC have `level` set in their frontmatter.
+No click animations on this slide.
+-->
 
 ---
-foo: bar
+layout: two-cols
+title: More Slidev Features
 dragPos:
-  square: 691,32,167,_,-16
+  logo: 0,-118,0,0
 ---
 
-# Draggable Elements
+# Bonus: Slidev's Powerhouse Features
 
-Double-click on the draggable elements to edit their positions.
+Slidev offers much more! Here are a few from the sample:
 
-<br>
+- **LaTeX**: For beautiful math equations.
+  Inline: $\\sqrt{3x-1}+(1+x)^2$
+  Block:
+  $$
+  \\begin{aligned}
+  \\nabla \\cdot \\vec{E} &= \\frac{\\rho}{\\varepsilon_0} \\\\
+  \\nabla \\cdot \\vec{B} &= 0 \\\\
+  \\nabla \\times \\vec{E} &= -\\frac{\\partial\\vec{B}}{\\partial t} \\\\
+  \\nabla \\times \\vec{B} &= \\mu_0\\vec{J} + \\mu_0\\varepsilon_0\\frac{\\partial\\vec{E}}{\\partial t}
+  \\end{aligned}
+  $$
 
-###### Directive Usage
+- **Diagrams**: Create diagrams from text.
+  ```mermaid
+  graph TD
+      A[Start] --> B{Decision};
+      B -- Yes --> C[Good Percentiles!];
+      B -- No --> D[Check Outliers!];
+  ```
 
-```md
-<img v-drag="'square'" src="https://sli.dev/logo.png">
-```
+::right::
 
-<br>
-
-###### Component Usage
-
-```md
-<v-drag text-3xl>
-  <div class="i-carbon:arrow-up" />
-  Use the `v-drag` component to have a draggable container!
-</v-drag>
-```
-
-<v-drag pos="663,206,261,_,-15">
-  <div text-center text-3xl border border-main rounded>
-    Double-click me!
+- **Motions**: Powered by `@vueuse/motion`.
+  ```html
+  <div v-motion :initial="{ x: -80 }" :enter="{ x: 0 }">
+    Animated Text!
   </div>
-</v-drag>
+  ```
+  <div
+    v-motion
+    :initial="{ x: -80, opacity: 0 }"
+    :enter="{ x: 0, opacity: 1, transition: { delay: 500 } }"
+    class="text-2xl text-blue-500 mt-4"
+  >
+    Animated Text!
+  </div>
 
-<img v-drag="'square'" src="https://sli.dev/logo.png">
+- **Draggable Elements**: (Double-click to move)
+  ```md
+  <img v-drag="'logo'" src="https://sli.dev/logo.png" class="w-20">
+  ```
+  <img v-drag="'logo'" src="https://sli.dev/logo.png" class="w-20 cursor-grab active:cursor-grabbing">
 
-###### Draggable Arrow
+- **Monaco Editor**: For live coding (add `{monaco}` to code block).
+  ```ts {monaco}
+  // Try editing this code!
+  function greet(name: string) {
+    console.log(\`Hello, \${name}!\`);
+  }
+  greet('Developer');
+  ```
 
-```md
-<v-drag-arrow two-way />
-```
-
-<v-drag-arrow pos="67,452,253,46" two-way op70 />
-
----
-src: ./pages/imported-slides.md
-hide: false
----
-
----
-
-# Monaco Editor
-
-Slidev provides built-in Monaco Editor support.
-
-Add `{monaco}` to the code block to turn it into an editor:
-
-```ts {monaco}
-import { ref } from 'vue'
-import { emptyArray } from './external'
-
-const arr = ref(emptyArray(10))
-```
-
-Use `{monaco-run}` to create an editor that can execute the code directly in the slide:
-
-```ts {monaco-run}
-import { version } from 'vue'
-import { emptyArray, sayHello } from './external'
-
-sayHello()
-console.log(`vue ${version}`)
-console.log(emptyArray<number>(10).reduce(fib => [...fib, fib.at(-1)! + fib.at(-2)!], [1, 1]))
-```
+<!--
+This slide showcases some extra Slidev features as requested.
+- LaTeX for math.
+- Mermaid for diagrams.
+- v-motion for animations.
+- v-drag for draggable elements.
+- Monaco editor for interactive code blocks.
+No sequential v-click animations on this slide.
+-->
 
 ---
 layout: center
 class: text-center
 ---
 
-# Learn More
+# Learn More About Slidev
 
 [Documentation](https://sli.dev) · [GitHub](https://github.com/slidevjs/slidev) · [Showcases](https://sli.dev/resources/showcases)
 
+Explore themes, create custom components, and much more!
+
 <PoweredBySlidev mt-10 />
+
+<!--
+Final "Learn More" slide.
+- Links to official Slidev resources.
+- PoweredBySlidev component.
+No click animations on this slide.
+-->
