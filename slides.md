@@ -154,47 +154,113 @@ Clicks:
 4: Highlight Median values
 5: Show "Why this rocks..."
 -->
+---
+layout: default
+level: 2
+title: Example 1 - Bad Average, Good Percentiles
+---
+
+# When Averages Fail
+## Bad Average, Good Percentiles
+
+<div v-click="1">
+Scenario: 10 requests: <code> 50, 60, 55, 65, 70, 75, 80, 85, 90, <span class="text-red-500 font-bold">5000</span></code>
+</div>
+
+<div class="grid grid-cols-3 gap-4 mt-4">
+  <div v-click="2">
+    <h3>Average:</h3>
+    <pre><code class="language-ts"> = 563ms</code></pre>
+    <span v-click="3" v-mark.red="3">Highly misleading!</span>
+  </div>
+ 
+  <div v-click="4">
+    <h3>p90:</h3>
+    9th value in sorted list
+    <pre><code class="language-ts">= 90ms</code></pre>
+    <span v-click="5" class="text-green-500" v-mark.green="5">Much better!</span>
+  </div>
+ <div v-click="7">
+    <h3 v-click="7">p50 <span v-click="8" v-mark.highlight.orange="8">(Median):</span></h3>
+    <pre><code class="language-ts">(70+75)/2 = 72.5ms</code></pre>
+  </div>
+  
+</div>
+ 
+ <br>
+ <br>
+ 
+<div v-click="9">
+  <p class="mt-6 text-lg italic">
+    Takeaway: One terrible request (<span class="text-red-500" v-mark.red="9">5000ms</span>) inflates the average, but 90% of users got &lt;90ms. Percentiles tell the true story.
+  </p>
+</div>
 
 ---
 layout: two-cols
 layoutClass: gap-8
 level: 1
 ---
+# Why Percentiles Beat Averages
 
-# Why Percentiles Rule in DevOps
+<div v-click="1" class="flex items-start gap-3 mb-4">
+  <div class="text-blue-500 text-xl">👥</div>
+  <div>
+    <h3 class="text-lg font-semibold mb-1">Real User Experience</h3>
+    <p class="text-gray-600">Percentiles show what most users actually experience, not rare edge cases</p>
+  </div>
+</div>
 
-<div v-click="1">
-- **Real user experience**: Percentiles (e.g., p90, p95) focus on what most users see, not rare spikes.
+<div v-click="2" class="flex items-start gap-3 mb-4">
+  <div class="text-green-500 text-xl">🎯</div>
+  <div>
+    <h3 class="text-lg font-semibold mb-1">Perfect for SLOs</h3>
+    <p class="text-gray-600">Set targets like "95% of requests under 200ms" — percentiles measure this directly</p>
+  </div>
 </div>
-<div v-click="2">
-- **SLOs and SLAs**: You set targets like "95% of requests < 200ms." Percentiles measure this directly.
-</div>
-<div v-click="3">
-- **Outlier resistance**: A few slow requests don't ruin your metrics.
+
+<div v-click="3" class="flex items-start gap-3">
+  <div class="text-purple-500 text-xl">🛡️</div>
+  <div>
+    <h3 class="text-lg font-semibold mb-1">Outlier Resistant</h3>
+    <p class="text-gray-600">One 30-second timeout won't destroy your metrics</p>
+    <p class="text-sm text-purple-700 mt-1">Averages would spike, percentiles stay stable</p>
+  </div>
 </div>
 
 ::right::
 
-<div v-click="4" class="mt-8">
-### Compare (from our first example):
-<br>
-Average: <code v-mark.red="5">**399.5ms**</code>
-<p>(Suggests poor performance)</p>
-<br>
-p90: <code v-mark.green="5">**150ms**</code>
-<p>(Shows most users are fine)</p>
+<div v-click="4" class="mt-4">
+  <h3 class="text-xl font-bold mb-6 text-center">Same Data, Different Stories</h3>
+  
+
+  <div class="bg-red-50 border-l-4 border-red-500 p-4 mb-4 rounded-r">
+    <div class="flex items-center justify-between mb-2">
+      <span class="font-semibold text-red-800">Average</span>
+      <code v-mark.red.bold="5" class="text-3xl font-bold text-red-600">399ms</code>
+    </div>
+    <div class="text-red-700 text-sm font-medium">
+      😰 "Our app is slow! Users are suffering!"
+    </div>
+  </div>
+
+  <div class="bg-green-50 border-l-4 border-green-500 p-4 mb-4 rounded-r">
+    <div class="flex items-center justify-between mb-2">
+      <span class="font-semibold text-green-800">P90</span>
+      <code v-mark.green.bold="5" class="text-3xl font-bold text-green-600">150ms</code>
+    </div>
+    <div class="text-green-700 text-sm font-medium">
+      😊 "90% of users get sub-150ms response!"
+    </div>
+  </div>
 </div>
 
-<div v-click="6" class="mt-6">
-<mermaid caption="Average vs P90 visualization from first example" alt="Bar chart showing average much higher than P90">
-graph LR
-    A[Average: 399.5ms] -->|Skewed by Outlier| BadExperience(Poor Perception)
-    P[p90: 150ms] -->|Represents Majority| GoodExperience(Actual Perception)
-
-    style A fill:#fecaca,stroke:#ef4444,stroke-width:2px
-    style P fill:#d1fae5,stroke:#10b981,stroke-width:2px
-</mermaid>
+<div v-click="6" class="mt-6 p-4 bg-blue-50 rounded-lg">
+  <p class="text-blue-800 font-medium text-center">
+    💡 <strong>Key Insight:</strong> Most users are happy, only a few outliers are slow
+  </p>
 </div>
+
 
 <!--
 This slide uses:
@@ -208,48 +274,6 @@ Clicks:
 6: Show Mermaid diagram
 -->
 
----
-level: 2
-title: Example 1 - Bad Average, Good Percentiles
----
-
-# When Averages Fail
-## Example 1: Bad Average, Good Percentiles
-
-Scenario: 10 requests: `50, 60, 55, 65, 70, 75, 80, 85, 90,` <code v-mark.bold.red>5000</code>
-
-<div grid="~ cols-3 gap-4" class="mt-4">
-  <div v-click="1">
-    **Average:**
-    ```ts
-    (50+60+55+65+70+75+80+85+90+5000)/10
-    // = 563ms
-    ```
-    <span v-mark.red="2">Highly misleading!</span>
-  </div>
-  <div v-click="3">
-    **Median:**
-    Sorted: `50,55,60,65,`**`70,75`**`,80,85,90,5000`
-    ```ts
-    (70+75)/2
-    // = 67.5ms
-    ```
-  </div>
-  <div v-click="4">
-    **p90:**
-    9th value in sorted list
-    ```ts
-    // = 90ms
-    ```
-    <span v-mark.green="5">Much better!</span>
-  </div>
-</div>
-
-<div v-click="6">
-  <p class="mt-6 text-lg italic">
-Takeaway: One terrible request (<code v-mark.red="7">5000ms</code>) inflates the average, but 90% of users got <90ms. Percentiles tell the true story.
-  </p>
-</div>
 
 <!--
 Clicks:
