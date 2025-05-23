@@ -261,72 +261,57 @@ level: 1
   </p>
 </div>
 
-
-<!--
-This slide uses:
-- two-cols layout for a clear comparison.
-Clicks:
-1: Show "Real user experience"
-2: Show "SLOs and SLAs"
-3: Show "Outlier resistance"
-4: Show "Compare" text
-5: Highlight comparison values
-6: Show Mermaid diagram
--->
-
-
-<!--
-Clicks:
-1: Show Average calculation
-2: Highlight "Highly misleading"
-3: Show Median calculation
-4: Show P90 calculation
-5: Highlight "Much better"
-6: Show Takeaway text
-7: Highlight outlier in takeaway
--->
-
 ---
 level: 2
-title: Example 2 - Good Average, Bad Percentiles
+title: Good Average, Bad Percentiles
 ---
 
-# Another Trap
-## Example 2: Good Average, Bad Percentiles
+# The Hidden Trap
+## Example: Good Average, Bad Percentiles
 
-Scenario: 10 requests: `50, 50, 50, 50, 50,` <code v-mark.bold.orange>400, 400, 400, 400, 400</code>
-
-<div grid="~ cols-3 gap-4" class="mt-4">
-  <div v-click="1">
-    **Average:**
-    ```ts
-    (50*5 + 400*5)/10
-    // = 225ms
-    ```
-    <span v-mark.yellow="2">Seems okay...</span>
-  </div>
-  <div v-click="3">
-    **Median:**
-    Sorted: `50,50,50,50,`**`50,400`**`,400,400,400,400`
-    ```ts
-    (50+400)/2
-    // = 225ms
-    ```
-  </div>
-  <div v-click="4">
-    **p90:**
-    9th value in sorted list
-    ```ts
-    // = 400ms
-    ```
-    <span v-mark.red="5">Alarming!</span>
+<div class="mb-6 mt-3">
+  <div class="font-mono text-xl bg-gray-900/80 p-4 rounded-lg inline-block border border-gray-600/30">
+    <span class="text-green-300">50, 50, 50, 50, 50,</span>
+    <span class="text-red-300 font-semibold">400, 400, 400, 400, 400</span>
   </div>
 </div>
 
-<div v-click="6">
-  <p class="mt-6 text-lg italic">
-Takeaway: Average looks decent, but <span v-mark.highlight.orange="7">50% of users waited 400ms!</span> Percentiles expose the pain for many users.
-  </p>
+<div class="grid grid-cols-3 gap-6 mt-8">
+  
+  <div v-click="1" class="bg-blue-900/40 p-6 rounded-xl border border-blue-400/30 hover:bg-blue-900/50 transition-all">
+    <h3 class="text-xl font-bold mb-4 text-blue-300">Average</h3>
+    <div class="font-mono text-sm mb-3 bg-gray-900/60 p-3 rounded-md border border-gray-600/40">
+      <div class="text-gray-200">(50×5 + 400×5)/10</div>
+      <div class="text-blue-200 font-semibold">= 225ms</div>
+    </div>
+    <div  class="text-sm mt-3">
+      <span class="px-3 py-1 bg-yellow-600/30 rounded-full text-yellow-200 border border-yellow-400/40">
+        Seems okay...
+      </span>
+    </div>
+  </div>
+
+  <div v-click="2" class="bg-purple-900/40 p-6 rounded-xl border border-purple-400/30 hover:bg-purple-900/50 transition-all">
+    <h3 class="text-xl font-bold mb-4 text-purple-300">Median</h3>
+    <div class="text-xs mb-2 text-gray-300 font-medium">Sorted values:</div>
+    <div class="font-mono text-xs mb-3 bg-gray-900/60 p-3 rounded-md border border-gray-600/40">
+      <div class="text-purple-200 mt-2 font-semibold">(50+400)/2 = 225ms</div>
+    </div>
+  </div>
+
+  <div v-click="3" class="bg-red-900/40 p-6 rounded-xl border border-red-400/30 hover:bg-red-900/50 transition-all">
+    <h3 class="text-xl font-bold mb-4 text-red-300">P90</h3>
+    <div class="text-xs mb-2 text-gray-300 font-medium">9th value in sorted list:</div>
+    <div class="font-mono text-sm mb-3 bg-gray-900/60 p-3 rounded-md border border-gray-600/40">
+      <div class="text-red-200 text-2xl font-bold">400ms</div>
+    </div>
+    <div class="text-sm mt-3">
+      <span class="px-3 py-1 bg-red-600/40 rounded-full text-red-200 font-semibold border border-red-400/50">
+        ⚠️ Alarming!
+      </span>
+    </div>
+  </div>
+  
 </div>
 
 <!--
@@ -342,60 +327,46 @@ Clicks:
 
 ---
 level: 2
-title: Example 3 - Averages and Percentiles Align
+title: Averages and Percentiles Align
 ---
 
 # When Averages and Percentiles Align
-## Example 3
 
-Scenario: 10 requests: `100, 102, 104, 106, 108, 110, 112, 114, 116, 118`
-
-<div grid="~ cols-3 gap-4" class="mt-4">
-  <div v-click="1">
-    **Average:**
-    ```ts
-    // Sum / 10 = 109ms
-    ```
-  </div>
-  <div v-click="2">
-    **Median:**
-    ```ts
-    // (108+110)/2 = 109ms
-    ```
-  </div>
-  <div v-click="3">
-    **p90:**
-    ```ts
-    // 9th value = 116ms
-    ```
+<div class="mb-6 mt-3">
+  <div class="font-mono text-xl bg-gray-900/80 p-4 rounded-lg inline-block border border-gray-600/30">
+    <span class="text-green-300">100, 102, 104, 106, 108, 110, 112, 114, 116, 118</span>
   </div>
 </div>
 
-<div v-click="4">
-  <p class="mt-6 text-lg italic">
-Takeaway: No significant outliers, so average, median, and percentiles align. <span v-mark.highlight.green="5">But this is rare in real systems!</span>
-  </p>
+<div grid="~ cols-3 gap-4" class="mt-8">
+  <div v-click="1" class="bg-blue-900/40 p-6 rounded-xl border border-blue-400/30 hover:bg-blue-900/50 transition-all">
+    <h3 class="text-xl font-bold mb-4 text-blue-300">Average</h3>
+    <div class="font-mono text-sm mb-3 bg-gray-900/60 p-3 rounded-md border border-gray-600/40">
+      <div class="text-blue-200 font-semibold">= 109ms</div>
+    </div>
+  </div>
+  <div v-click="2" class="bg-purple-900/40 p-6 rounded-xl border border-purple-400/30 hover:bg-purple-900/50 transition-all">
+    <h3 class="text-xl font-bold mb-4 text-purple-300">Median</h3>
+    <div class="font-mono text-sm mb-3 bg-gray-900/60 p-3 rounded-md border border-gray-600/40">
+      <div class="text-purple-200 font-semibold">(108+110)/2 = 109ms</div>
+    </div>
+  </div>
+  <div v-click="3" class="bg-green-900/40 p-6 rounded-xl border border-green-400/30 hover:bg-green-900/50 transition-all">
+    <h3 class="text-xl font-bold mb-4 text-green-300">P90</h3>
+    <div class="font-mono text-sm mb-3 bg-gray-900/60 p-3 rounded-md border border-gray-600/40">
+      <div class="text-green-200 font-semibold">9th value = 116ms</div>
+    </div>
+  </div>
 </div>
 
 <div
   v-motion
   :initial="{ x: 100, opacity: 0 }"
   :enter="{ x: 0, opacity: 1, transition: { delay: 1000 } }"
-  class="mt-4 p-2 bg-teal-50 text-teal-700 rounded"
+  class="mt-12 p-4 bg-teal-900/40 border border-teal-400/30 rounded-xl text-teal-100"
 >
-This scenario represents a very consistent system performance, which is ideal but not always the reality.
+  This scenario represents a very consistent system performance with no outliers, which is ideal but rarely seen in real systems.
 </div>
-
-
-<!--
-Clicks:
-1: Show Average
-2: Show Median
-3: Show P90
-4: Show Takeaway text
-5: Highlight takeaway point
-The v-motion element is not click-controlled in this sequence.
--->
 
 ---
 layout: default
