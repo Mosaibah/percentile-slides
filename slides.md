@@ -36,6 +36,7 @@ highlighter: shiki
   </a>
 </div>
 
+
 ---
 transition: fade-out
 level: 1
@@ -43,43 +44,44 @@ level: 1
 
 # A Tale of Misleading Averages
 
-Imagine you're monitoring an API. You get 10 requests with these response times (in milliseconds):
-
-<div v-click="1">
-  <div class="mt-4">
+<div class="mt-8">
+  <p class="text-gray-300 text-lg mb-6">Imagine you're monitoring an API. You get 10 requests with these response times:</p>
+  
+  <div v-click="1" class="mb-6">
+    <div class="p-4 rounded-lg bg-gray-800/30">
 ```json
 [100, 120, 110, 130, 115, 125, 105, 140, 150, 2000]
 ```
+    </div>
   </div>
-</div>
 
-<div v-click="2">
-  <div class="mt-4">
-    Average: 
-    <code>(100 + 120 + 110 + 130 + 115 + 125 + 105 + 140 + 150 + 2000) / 10 =</code>
-    <code v-click="3" v-mark.red.bold="3">399.5ms</code>
+  <div v-click="2" class="grid md:grid-cols-2 gap-6">
+    <div class="p-5 rounded-lg bg-gray-800/30">
+      <h3 class="text-lg font-medium text-amber-400 mb-3">Average Calculation</h3>
+      <code class="text-sm text-gray-300 block mb-2">(100 + 120 + ... + 2000) ÷ 10</code>
+      <div v-click="3" class="text-xl font-bold text-red-400">= 399.5ms</div>
+    </div>
+    <div v-click="4" class="p-4 rounded-lg bg-gray-800/30">
+      <h3 class="text-lg font-medium text-blue-400 mb-3">The Reality</h3>
+      <p class="text-gray-300 mb-2">Sounds bad, right? But look closer...</p>
+      <p class="text-sm text-gray-400"><span v-mark.underline.green="5">90% of users</span> had great performance (&lt;150ms)</p>
+    </div>
   </div>
-</div>
 
-<div v-click="4">
-  <p class="mt-4">
-    Sounds bad, right? But look closer...
+  <div v-click="6" class="mt-6">
+    <p class="text-gray-300">
+      <span class="font-medium text-emerald-400">Why this matters:</span> One outlier 
+      <span v-mark.circle.orange="7">2000ms</span> completely skews the average
     </p>
-</div>
-  <div v-click="5">
-  Why this matters: One outlier (<code v-mark.orange="6">2000ms</code>) skews the average, making performance seem worse than it is. Let's dig deeper.
   </div>
-
+</div>
 
 <style>
 h1 {
-  background-color: #2B90B6;
-  background-image: linear-gradient(45deg, #4EC5D4 10%, #146b8c 20%);
-  background-size: 100%;
+  background: linear-gradient(45deg, #4EC5D4 10%, #146b8c 70%);
+  background-clip: text;
   -webkit-background-clip: text;
-  -moz-background-clip: text;
   -webkit-text-fill-color: transparent;
-  -moz-text-fill-color: transparent;
 }
 </style>
 
@@ -90,11 +92,9 @@ level: 1
 
 # Sorting to See the Truth
 
-Let's sort those response times:
-<br>
-<br>
+Let's sort those response times to find the real story
 
-<div v-click="1">
+  <div v-click="1">
 
 ````md magic-move
 ```json {all|all}
@@ -107,20 +107,25 @@ Let's sort those response times:
 [100, 105, 110, 115, 120, 125, 130, 140, 150, 2000]
 ```
 ````
+
 </div>
 
-<div v-click="1" class="mt-4">
-  Now, let's find the response time that 90% of users experience or better:
-  <ol class="mt-2 ml-6 list-decimal">
-    <li v-click="3">
-     Sort the list.
-    </li>
-    <li v-click="4">
-      Find the rank for the 90% mark. For 10 items:
-    </li>
-    </ol>
-</div>
-
+  <div v-click="2" class="mt-6 grid md:grid-cols-2 gap-8">
+    <div>
+      <p class="text-gray-300 mb-4">Now, let's find the response time that 90% of users experience or better:</p>
+      <div class="space-y-3 text-gray-300">
+        <div v-click="3" class="flex items-center gap-3">
+          <span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm flex items-center justify-center">1</span>
+          <span>Sort the list ✓</span>
+        </div>
+        <div v-click="4" class="flex items-center gap-3">
+          <span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm flex items-center justify-center">2</span>
+          <span>Find the rank for the 90% mark</span>
+        </div>
+      </div>
+    </div>
+    <div v-click="5">
+    
 $$ {hide|hide|1|2|3|all}
 \begin{aligned}
 \text{Rank} &= n \times \frac{\text{percentage}}{100} \\
@@ -128,31 +133,21 @@ $$ {hide|hide|1|2|3|all}
 &= 9
 \end{aligned}
 $$
-<div v-click="9">
-  The 9th value in our sorted list is <span v-click="10" v-mark.underline.blue="10">150ms</span>
-</div>
-  <div v-click="11" class="mt-2">
-    This 150ms value? 
-    <span v-click="12" >We call it </span> 
-    <span v-click="13" v-mark.underline.blue="13">90th percentile</span> 
+
   </div>
-
-<!-- <div v-click="7" class="mt-4">
-Median (Middle Value): Average of <code v-mark.green="7">120</code> & <code v-mark.green="7">125</code> = **<code v-mark.green.bold="7">122.5ms</code>**.
 </div>
 
-<div v-click="8" class="mt-6 text-lg italic">
-The takeaway: Sorting reveals typical user experiences by sidelining outliers.
-</div> -->
-
+<div v-click="9" class="mt-6 space-y-3">
+  <p class="text-gray-300">
+    The 9th value in our sorted list is <span v-mark.underline.green="10">150ms</span>
+  </p>
+  <p v-click="11" class="text-gray-300">
+    This 150ms value? We call it the <span v-mark.highlight.orange="12">90th percentile</span>
+  </p>
+</div>
 <!--
-This slide uses Magic Move to animate the sorting process!
-Clicks:
-1: Show P90 text
-2: Highlight P90 value and explanation
-3: Show Median text
-4: Highlight Median values
-5: Show "Why this rocks..."
+This slide demonstrates why percentiles are more reliable than averages
+Each card has multiple click animations to reveal information step by step
 -->
 ---
 layout: default
@@ -163,37 +158,51 @@ title: Example 1 - Bad Average, Good Percentiles
 # When Averages Fail
 ## Bad Average, Good Percentiles
 
-<div v-click="1">
-Scenario: 10 requests: <code> 50, 60, 55, 65, 70, 75, 80, 85, 90, <span class="text-red-500 font-bold">5000</span></code>
+<div v-click="1" class="mb-8 mt-4">
+  <div class="font-mono text-lg bg-gray-900/80 p-4 rounded-lg inline-block border border-gray-600/30">
+    50, 60, 55, 65, 70, 75, 80, 85, 90, <span class="text-red-300 font-bold">5000</span>ms
+  </div>
 </div>
 
-<div class="grid grid-cols-3 gap-4 mt-4">
-  <div v-click="2">
-    <h3>Average:</h3>
-    <pre><code class="language-ts"> = 563ms</code></pre>
-    <span v-click="3" v-mark.red="3">Highly misleading!</span>
+<div class="grid grid-cols-3 gap-6 mt-8">
+  
+  <div v-click="2" class="bg-red-900/40 p-6 rounded-xl border border-red-400/30 hover:bg-red-900/50 transition-all">
+    <h3 class="text-xl font-bold mb-4 text-red-300">Average</h3>
+    <div v-click="3" class="font-mono text-sm mb-3 bg-gray-900/60 p-3 rounded-md border border-gray-600/40">
+      <div class="text-gray-200">(50+60+...+5000)/10</div>
+      <div class="text-red-200 font-semibold text-lg">= 563ms</div>
+    </div>
+    <div v-click="4" class="text-sm mt-3">
+      <span class="px-3 py-1 bg-red-600/40 rounded-full text-red-200 font-semibold border border-red-400/50">
+        ⚠️ Misleading!
+      </span>
+    </div>
   </div>
- 
-  <div v-click="4">
-    <h3>p90:</h3>
-    9th value in sorted list
-    <pre><code class="language-ts">= 90ms</code></pre>
-    <span v-click="5" class="text-green-500" v-mark.green="5">Much better!</span>
+
+  <div v-click="5" class="bg-green-900/40 p-6 rounded-xl border border-green-400/30 hover:bg-green-900/50 transition-all">
+    <h3 class="text-xl font-bold mb-4 text-green-300">P90</h3>
+    <div v-click="6" class="text-xs mb-2 text-gray-300 font-medium">9th value in sorted list:</div>
+    <div v-click="7" class="font-mono text-sm mb-3 bg-gray-900/60 p-3 rounded-md border border-gray-600/40">
+      <div class="text-green-200 text-xl font-bold">90ms</div>
+    </div>
+    <div v-click="8" class="text-sm mt-3">
+      <span class="px-3 py-1 bg-green-600/30 rounded-full text-green-200 border border-green-400/40">
+        ✓ Much better!
+      </span>
+    </div>
   </div>
- <div v-click="7">
-    <h3 v-click="7">p50 <span v-click="8" v-mark.highlight.orange="8">(Median):</span></h3>
-    <pre><code class="language-ts">(70+75)/2 = 72.5ms</code></pre>
+
+  <div v-click="9" class="bg-blue-900/40 p-6 rounded-xl border border-blue-400/30 hover:bg-blue-900/50 transition-all">
+    <h3 class="text-xl font-bold mb-4 text-blue-300">P50 <span v-click="12" v-mark.highlight.orange="12" class="px-2 rounded text-white ">(Median)</span></h3>
+    <div v-click="10" class="font-mono text-sm mb-3 bg-gray-900/60 p-3 rounded-md border border-gray-600/40">
+      <div class="text-gray-200">(70+75)/2</div>
+      <div class="text-blue-200 font-semibold">= 72.5ms</div>
+    </div>
+    <div v-click="11" class="text-sm mt-3 text-gray-300">
+      Half got this or better
+    </div>
   </div>
   
-</div>
- 
- <br>
- <br>
- 
-<div v-click="9">
-  <p class="mt-6 text-lg italic">
-    Takeaway: One terrible request (<span class="text-red-500" v-mark.red="9">5000ms</span>) inflates the average, but 90% of users got &lt;90ms. Percentiles tell the true story.
-  </p>
 </div>
 
 ---
@@ -359,15 +368,9 @@ title: Averages and Percentiles Align
   </div>
 </div>
 
-<div
-  v-motion
-  :initial="{ x: 100, opacity: 0 }"
-  :enter="{ x: 0, opacity: 1, transition: { delay: 1000 } }"
-  class="mt-12 p-4 bg-teal-900/40 border border-teal-400/30 rounded-xl text-teal-100"
->
+<div v-click="4" class="mt-12 p-4 bg-teal-900/40 border border-teal-400/30 rounded-xl text-teal-100">
   This scenario represents a very consistent system performance with no outliers, which is ideal but rarely seen in real systems.
 </div>
-
 ---
 layout: default
 level: 1
@@ -375,131 +378,48 @@ level: 1
 
 # Actionable Takeaways for DevOps
 
-<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
-  <div v-click="1" class="p-4 border rounded-lg shadow hover:shadow-xl transition-shadow">
-    <h3 class="text-xl font-semibold text-emerald-600">🎯 Use Percentiles</h3>
-    Use percentiles (p90, p95, p99) for monitoring and SLOs. They reflect actual user experience.
+<div class="mt-16 grid md:grid-cols-2 gap-6">
+  <div v-click="1" class="flex items-start gap-4 p-6 rounded-lg bg-gray-800/30">
+    <div class="text-2xl">🎯</div>
+    <div>
+      <h3 class="text-xl font-medium text-emerald-400 mb-2">Use Percentiles</h3>
+      <p class="text-gray-300">Monitor with p90, p95, p99 metrics. They reflect real user experience better than averages.</p>
+    </div>
   </div>
 
-  <div v-click="2" class="p-4 border rounded-lg shadow hover:shadow-xl transition-shadow">
-    <h3 class="text-xl font-semibold text-amber-600">⚠️ Avoid Averages (Mostly)</h3>
-    Avoid averages for response times unless data is very consistent (rare in production).
+  <div v-click="2" class="flex items-start gap-4 p-6 rounded-lg bg-gray-800/30">
+    <div class="text-2xl">⚠️</div>
+    <div>
+      <h3 class="text-xl font-medium text-amber-400 mb-2">Avoid Averages</h3>
+      <p class="text-gray-300">Averages hide outliers and performance issues that impact user satisfaction.</p>
+    </div>
   </div>
 
-  <div v-click="3" class="p-4 border rounded-lg shadow hover:shadow-xl transition-shadow">
-    <h3 class="text-xl font-semibold text-sky-600">📈 Example SLO</h3>
-    Set an SLO: "95% of API requests < 200ms." Track p95 to ensure you meet it.
-    <br>
-    <span class="text-sm text-gray-600">e.g. $\\text{P}_{95}(\\text{response time}) < 200\\text{ms}$</span>
+  <div v-click="3" class="flex items-start gap-4 p-6 rounded-lg bg-gray-800/30">
+    <div class="text-2xl">📈</div>
+    <div>
+      <h3 class="text-xl font-medium text-blue-400 mb-2">SLO Example</h3>
+      <p class="text-gray-300 mb-2">"95% of API requests under 200ms"</p>
+      <code class="text-sm text-gray-400">P₉₅(response_time) < 200ms</code>
+    </div>
   </div>
 
-  <div v-click="4" class="p-4 border rounded-lg shadow hover:shadow-xl transition-shadow">
-    <h3 class="text-xl font-semibold text-purple-600">🛠️ Tool Tip</h3>
-    Use Prometheus, Grafana, or Datadog to track percentiles easily. They have built-in functions!
-    <br>
-    <span class="text-sm text-gray-600">(e.g., `histogram_quantile()` in PromQL)</span>
+  <div v-click="4" class="flex items-start gap-4 p-6 rounded-lg bg-gray-800/30">
+    <div class="text-2xl">🛠️</div>
+    <div>
+      <h3 class="text-xl font-medium text-purple-400 mb-2">Tools</h3>
+      <p class="text-gray-300 mb-2">Prometheus, Grafana, Datadog</p>
+      <code class="text-sm text-gray-400">histogram_quantile() in PromQL</code>
+    </div>
   </div>
 </div>
 
-<div v-click="5">
-  <p class="mt-12 text-2xl text-center font-semibold text-gray-700">
-Final word: <span class="text-green-500">Percentiles empower you</span> to focus on what matters—<span class="text-blue-500">your users!</span>
+<div v-click="5" class="mt-16 text-center">
+  <p class="text-xl text-gray-300">
+    <span class="text-emerald-400 font-medium">Percentiles empower you</span> to focus on 
+    <span class="text-blue-400 font-medium">your users</span>
   </p>
 </div>
-
-<!--
-Clicks:
-1: Show "Use Percentiles" card
-2: Show "Avoid Averages" card
-3: Show "Example SLO" card
-4: Show "Tool Tip" card
-5: Show "Final word"
--->
-
----
-title: Table of Contents
-level: 1
----
-
-# Table of Contents
-
-You can use the `Toc` component to generate a table of contents for your slides.
-The `level` in each slide's frontmatter determines its depth in the ToC.
-
-```html
-<Toc minDepth="1" maxDepth="2" />
-```
-
-<Toc class="mt-4" minDepth="1" maxDepth="2" />
-
-<!--
-This slide demonstrates the Table of Contents feature.
-- Make sure slides that should appear in ToC have `level` set in their frontmatter.
-No click animations on this slide.
--->
-
----
-layout: two-cols
-title: More Slidev Features
-dragPos:
-  logo: 0,-118,0,0
----
-
-# Bonus: Slidev's Powerhouse Features
-
-Slidev offers much more! Here are a few from the sample:
-
-- **LaTeX**: For beautiful math equations.
-  Inline: $\\sqrt{3x-1}+(1+x)^2$
-  Block:
-  $$
-  \\begin{aligned}
-  \\nabla \\cdot \\vec{E} &= \\frac{\\rho}{\\varepsilon_0} \\\\
-  \\nabla \\cdot \\vec{B} &= 0 \\\\
-  \\nabla \\times \\vec{E} &= -\\frac{\\partial\\vec{B}}{\\partial t} \\\\
-  \\nabla \\times \\vec{B} &= \\mu_0\\vec{J} + \\mu_0\\varepsilon_0\\frac{\\partial\\vec{E}}{\\partial t}
-  \\end{aligned}
-  $$
-
-- **Diagrams**: Create diagrams from text.
-  ```mermaid
-  graph TD
-      A[Start] --> B{Decision};
-      B -- Yes --> C[Good Percentiles!];
-      B -- No --> D[Check Outliers!];
-  ```
-
-::right::
-
-- **Motions**: Powered by `@vueuse/motion`.
-  ```html
-  <div v-motion :initial="{ x: -80 }" :enter="{ x: 0 }">
-    Animated Text!
-  </div>
-  ```
-  <div
-    v-motion
-    :initial="{ x: -80, opacity: 0 }"
-    :enter="{ x: 0, opacity: 1, transition: { delay: 500 } }"
-    class="text-2xl text-blue-500 mt-4"
-  >
-    Animated Text!
-  </div>
-
-- **Draggable Elements**: (Double-click to move)
-  ```md
-  <img v-drag="'logo'" src="https://sli.dev/logo.png" class="w-20">
-  ```
-  <img v-drag="'logo'" src="https://sli.dev/logo.png" class="w-20 cursor-grab active:cursor-grabbing">
-
-- **Monaco Editor**: For live coding (add `{monaco}` to code block).
-  ```ts {monaco}
-  // Try editing this code!
-  function greet(name: string) {
-    console.log(\`Hello, \${name}!\`);
-  }
-  greet('Developer');
-  ```
 
 <!--
 This slide showcases some extra Slidev features as requested.
