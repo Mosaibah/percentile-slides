@@ -438,37 +438,37 @@ class: text-center
 # Thank You!
 
 <div class="grid grid-cols-2 gap-6 mt-12 max-w-2xl mx-auto">
-  <div class="flex items-center gap-3 p-4 bg-gray-800/30 rounded-lg hover:bg-gray-800/50 transition-all">
+  <a href="https://percentile.mosaibah.com" target="_blank" class="flex items-center gap-3 p-4 bg-gray-800/30 rounded-lg hover:bg-gray-800/50 transition-all">
     <div class="text-2xl text-blue-400"><carbon:presentation-file /></div>
     <div class="text-left">
       <div class="font-semibold text-blue-400">Slides</div>
       <div class="text-sm text-gray-400">View this presentation</div>
     </div>
-  </div>
+  </a>
   
-  <div class="flex items-center gap-3 p-4 bg-gray-800/30 rounded-lg hover:bg-gray-800/50 transition-all">
+  <a href="https://github.com/mosaibah/Percentile-slides" target="_blank" class="flex items-center gap-3 p-4 bg-gray-800/30 rounded-lg hover:bg-gray-800/50 transition-all">
     <div class="text-2xl text-purple-400"><carbon:logo-github /></div>
     <div class="text-left">
       <div class="font-semibold text-purple-400">GitHub</div>
       <div class="text-sm text-gray-400">Source code of this slide</div>
     </div>
-  </div>
+  </a>
   
-  <div class="flex items-center gap-3 p-4 bg-gray-800/30 rounded-lg hover:bg-gray-800/50 transition-all">
+  <a href="https://twitter.com/ProAbdulrahmna" target="_blank" class="flex items-center gap-3 p-4 bg-gray-800/30 rounded-lg hover:bg-gray-800/50 transition-all">
     <div class="text-2xl text-cyan-400"><carbon:logo-twitter /></div>
     <div class="text-left">
       <div class="font-semibold text-cyan-400">Twitter</div>
       <div class="text-sm text-gray-400">Connect with me</div>
     </div>
-  </div>
+  </a>
   
-  <div class="flex items-center gap-3 p-4 bg-gray-800/30 rounded-lg hover:bg-gray-800/50 transition-all">
+  <a href="https://youtu.be/YlPkAZyxMkE" target="_blank" class="flex items-center gap-3 p-4 bg-gray-800/30 rounded-lg hover:bg-gray-800/50 transition-all">
     <div class="text-2xl text-red-400"><carbon:logo-youtube /></div>
     <div class="text-left">
       <div class="font-semibold text-red-400">YouTube</div>
       <div class="text-sm text-gray-400">Watch the explanation</div>
     </div>
-  </div>
+  </a>
 </div>
 
 <div class="mt-12">

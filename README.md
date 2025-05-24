@@ -1,6 +1,9 @@
 # Why Percentiles Win
 
-This slide deck was presented in a [YouTube video](https://youtube.com/@mosaibah) explaining the concepts in detail.
+This slide deck was presented in a [YouTube video](https://youtu.be/YlPkAZyxMkE) explaining the concepts in detail.
+
+**🔗 [View Live Slides](https://percentile.mosaibah.com)**  
+**🎥 [Watch on YouTube](https://youtu.be/YlPkAZyxMkE)**
 
 ## Introduction
 
@@ -43,6 +46,6 @@ The presentation includes real-world data visualizations:
 
 ---
 
-[Twitter](https://twitter.com/mosaibah) | [YouTube](https://youtube.com/@mosaibah)
+[Twitter](https://twitter.com/ProAbdulrahmna) | [YouTube](https://youtube.com/@mosaibah)
 
 Built with [Slidev](https://sli.dev/) - Presentation slides for developers
