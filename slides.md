@@ -1,40 +1,22 @@
 ---
-# You can also start simply with 'default'
 theme: seriph
-# random image from a curated Unsplash collection by Anthony
-# like them? see https://unsplash.com/collections/94734566/slidev
 background: https://cover.sli.dev
-# some information about your slides (markdown enabled)
-title: DevOps Response Time Metrics
-subtitle: Why Percentiles Win
+title: Why Percentiles Win
+subtitle: Why averages can be misleading in performance monitoring
 info: |
-  ## DevOps Response Time Metrics
-  An interactive presentation on why percentiles are superior to averages for understanding performance.
+  ## Why Percentiles Win
+  An interactive presentation on why percentiles are superior to averages for understanding data distribution and performance metrics.
 
-  Inspired by Slidev features!
-# apply unocss classes to the current slide
 class: text-center
-# https://sli.dev/features/drawing
 drawings:
   persist: false
-# slide transition: https://sli.dev/guide/animations.html#slide-transitions
 transition: slide-left
-# enable MDC Syntax: https://sli.dev/features/mdc
 mdc: true
 highlighter: shiki
 ---
 
-# DevOps Response Time Metrics
-## Why Percentiles Win
-
-<div class="abs-br m-6 text-xl">
-  <button @click="$slidev.nav.openInEditor()" title="Open in Editor" class="slidev-icon-btn">
-    <carbon:edit />
-  </button>
-  <a href="https://github.com/slidevjs/slidev" target="_blank" class="slidev-icon-btn">
-    <carbon:logo-github />
-  </a>
-</div>
+# Why Percentiles Win
+## Why averages can be misleading in performance monitoring
 
 
 ---
@@ -64,7 +46,7 @@ level: 1
     <div v-click="4" class="p-4 rounded-lg bg-gray-800/30">
       <h3 class="text-lg font-medium text-blue-400 mb-3">The Reality</h3>
       <p class="text-gray-300 mb-2">Sounds bad, right? But look closer...</p>
-      <p class="text-sm text-gray-400"><span v-mark.underline.green="5">90% of users</span> had great performance (&lt;150ms)</p>
+      <p class="text-sm text-gray-400"><span v-mark.underline.green="5">most of users</span> had great performance (&lt;150ms)</p>
     </div>
   </div>
 
@@ -110,23 +92,23 @@ Let's sort those response times to find the real story
 
 </div>
 
-  <div v-click="2" class="mt-6 grid md:grid-cols-2 gap-8">
+  <div v-click="3" class="mt-6 grid md:grid-cols-2 gap-8">
     <div>
       <p class="text-gray-300 mb-4">Now, let's find the response time that 90% of users experience or better:</p>
       <div class="space-y-3 text-gray-300">
-        <div v-click="3" class="flex items-center gap-3">
+        <div v-click="4" class="flex items-center gap-3">
           <span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm flex items-center justify-center">1</span>
           <span>Sort the list ✓</span>
         </div>
-        <div v-click="4" class="flex items-center gap-3">
+        <div v-click="5" class="flex items-center gap-3">
           <span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm flex items-center justify-center">2</span>
           <span>Find the rank for the 90% mark</span>
         </div>
       </div>
     </div>
-    <div v-click="5">
+    <div v-click="6">
     
-$$ {hide|hide|1|2|3|all}
+$$ {hide|hide|hide|1|2|3|all}
 \begin{aligned}
 \text{Rank} &= n \times \frac{\text{percentage}}{100} \\
 &= 10 \times \frac{90}{100} \\
@@ -137,12 +119,12 @@ $$
   </div>
 </div>
 
-<div v-click="9" class="mt-6 space-y-3">
+<div v-click="10" class="mt-6 space-y-3">
   <p class="text-gray-300">
-    The 9th value in our sorted list is <span v-mark.underline.green="10">150ms</span>
+    The 9th value in our sorted list is <span v-mark.underline.green="11">150ms</span>
   </p>
-  <p v-click="11" class="text-gray-300">
-    This 150ms value? We call it the <span v-mark.highlight.orange="12">90th percentile</span>
+  <p v-click="12" class="text-gray-300">
+    This 150ms value? We call it the <span v-mark.highlight.orange="13">90th percentile</span>
   </p>
 </div>
 <!--
@@ -210,7 +192,7 @@ layout: two-cols
 layoutClass: gap-8
 level: 1
 ---
-# Why Percentiles Beat Averages
+# Why Percentiles Win
 
 <div v-click="1" class="flex items-start gap-3 mb-4">
   <div class="text-blue-500 text-xl">👥</div>
@@ -276,7 +258,7 @@ title: Good Average, Bad Percentiles
 ---
 
 # The Hidden Trap
-## Example: Good Average, Bad Percentiles
+## Good Average, Bad Percentiles
 
 <div class="mb-6 mt-3">
   <div class="font-mono text-xl bg-gray-900/80 p-4 rounded-lg inline-block border border-gray-600/30">
@@ -301,7 +283,7 @@ title: Good Average, Bad Percentiles
   </div>
 
   <div v-click="2" class="bg-purple-900/40 p-6 rounded-xl border border-purple-400/30 hover:bg-purple-900/50 transition-all">
-    <h3 class="text-xl font-bold mb-4 text-purple-300">Median</h3>
+    <h3 class="text-xl font-bold mb-4 text-purple-300">P.50 (Median)</h3>
     <div class="text-xs mb-2 text-gray-300 font-medium">Sorted values:</div>
     <div class="font-mono text-xs mb-3 bg-gray-900/60 p-3 rounded-md border border-gray-600/40">
       <div class="text-purple-200 mt-2 font-semibold">(50+400)/2 = 225ms</div>
@@ -355,7 +337,7 @@ title: Averages and Percentiles Align
     </div>
   </div>
   <div v-click="2" class="bg-purple-900/40 p-6 rounded-xl border border-purple-400/30 hover:bg-purple-900/50 transition-all">
-    <h3 class="text-xl font-bold mb-4 text-purple-300">Median</h3>
+    <h3 class="text-xl font-bold mb-4 text-purple-300">P.50 (Median)</h3>
     <div class="font-mono text-sm mb-3 bg-gray-900/60 p-3 rounded-md border border-gray-600/40">
       <div class="text-purple-200 font-semibold">(108+110)/2 = 109ms</div>
     </div>
@@ -421,32 +403,77 @@ level: 1
   </p>
 </div>
 
-<!--
-This slide showcases some extra Slidev features as requested.
-- LaTeX for math.
-- Mermaid for diagrams.
-- v-motion for animations.
-- v-drag for draggable elements.
-- Monaco editor for interactive code blocks.
-No sequential v-click animations on this slide.
--->
+---
+layout: center
+---
+
+# Histogram 
+
+<img src="./histogram.png" alt="Histogram showing distribution of salaries with different bin widths" class="h-80 w-auto mx-auto my-4 rounded-lg shadow-lg">
+
+---
+layout: center
+---
+
+# Salary 
+
+<img src="./salary-example.png" alt="US income statistics showing how averages are skewed by high earners" class="h-96 w-auto mx-auto  rounded-lg shadow-lg">
+
+
+---
+layout: center
+---
+
+# P.50 Age by Region
+
+<img src="./age-saudi-stat.png" alt="Map of Saudi Arabia showing median age by region, ranging from 25.0 to 30.0 years across different provinces" class="h-80 w-auto mx-auto my-4 rounded-lg shadow-lg">
+
+
 
 ---
 layout: center
 class: text-center
 ---
 
-# Learn More About Slidev
+# Thank You!
 
-[Documentation](https://sli.dev) · [GitHub](https://github.com/slidevjs/slidev) · [Showcases](https://sli.dev/resources/showcases)
+<div class="grid grid-cols-2 gap-6 mt-12 max-w-2xl mx-auto">
+  <div class="flex items-center gap-3 p-4 bg-gray-800/30 rounded-lg hover:bg-gray-800/50 transition-all">
+    <div class="text-2xl text-blue-400"><carbon:presentation-file /></div>
+    <div class="text-left">
+      <div class="font-semibold text-blue-400">Slides</div>
+      <div class="text-sm text-gray-400">View this presentation</div>
+    </div>
+  </div>
+  
+  <div class="flex items-center gap-3 p-4 bg-gray-800/30 rounded-lg hover:bg-gray-800/50 transition-all">
+    <div class="text-2xl text-purple-400"><carbon:logo-github /></div>
+    <div class="text-left">
+      <div class="font-semibold text-purple-400">GitHub</div>
+      <div class="text-sm text-gray-400">Source code of this slide</div>
+    </div>
+  </div>
+  
+  <div class="flex items-center gap-3 p-4 bg-gray-800/30 rounded-lg hover:bg-gray-800/50 transition-all">
+    <div class="text-2xl text-cyan-400"><carbon:logo-twitter /></div>
+    <div class="text-left">
+      <div class="font-semibold text-cyan-400">Twitter</div>
+      <div class="text-sm text-gray-400">Connect with me</div>
+    </div>
+  </div>
+  
+  <div class="flex items-center gap-3 p-4 bg-gray-800/30 rounded-lg hover:bg-gray-800/50 transition-all">
+    <div class="text-2xl text-red-400"><carbon:logo-youtube /></div>
+    <div class="text-left">
+      <div class="font-semibold text-red-400">YouTube</div>
+      <div class="text-sm text-gray-400">Watch the explanation</div>
+    </div>
+  </div>
+</div>
 
-Explore themes, create custom components, and much more!
+<div class="mt-12">
+  <p class="text-gray-500 text-sm">
+    Abdurlahman Mosaibah
+  </p>
+</div>
 
-<PoweredBySlidev mt-10 />
-
-<!--
-Final "Learn More" slide.
-- Links to official Slidev resources.
-- PoweredBySlidev component.
-No click animations on this slide.
--->
